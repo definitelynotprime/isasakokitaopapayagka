@@ -182,9 +182,9 @@
 
 <h1>
   MLCVL, will you be my Valentine? 🖤❤️<br>
-  <span style="font-size:16px; opacity:.65;">
-    I may be the Dark Knight… but you light up my heart ✨
-  </span>
+<span id="subtitle" style="font-size:16px; opacity:.65;">
+  I may be the Dark Knight… but you light up my heart ✨
+</span>
 </h1>
 
 
@@ -322,25 +322,28 @@ zone.addEventListener("pointermove", e => {
       fireGun();
     });
 
-    yesBtn.addEventListener("click", () => {
-      accepted = true;
+yesBtn.addEventListener("click", () => {
+  accepted = true;
 
-      art.src = kawaiiImg;
-      zone.style.display = "none";
-      hint.style.display = "none";
-      result.style.display = "block";
+  art.src = kawaiiImg;
+  zone.style.display = "none";
+  hint.style.display = "none";
+  document.getElementById("subtitle").style.display = "none"; // ⬅️ hide sub-text
+  result.style.display = "block";
 
-      confetti({
-        particleCount: 200,
-        spread: 120,
-        shapes: ['heart'],
-        colors: ['#ff3b7a', '#ff6b9a', '#ffffff'],
-        origin: { y: 0.6 }
-      });
-    });
+  confetti({
+    particleCount: 200,
+    spread: 120,
+    shapes: ['heart'],
+    colors: ['#ff3b7a', '#ff6b9a', '#ffffff'],
+    origin: { y: 0.6 }
+  });
+});
+
   </script>
 </body>
 </html>
+
 
 
 
