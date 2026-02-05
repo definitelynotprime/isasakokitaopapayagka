@@ -76,10 +76,10 @@
       text-align: center;
     }
 
-    /* YES — BIG + LEFT ALIGNED */
+    /* YES — BIG + LEFT */
     .yes-wrap {
       position: absolute;
-      left: 30%; /* ⬅️ moved left */
+      left: 30%;
       top: 50%;
       transform: translate(-50%, -50%) scale(3.2);
       transform-origin: center;
@@ -95,21 +95,22 @@
       background: var(--yesHover);
     }
 
-    /* NO — SLIGHTLY BIGGER (NOT OA) */
+    /* NO — DOUBLED SIZE (BUT STILL SMALLER THAN YES) */
     #noBtn {
       position: absolute;
       top: 50%;
       left: 62%;
       transform: translateY(-50%);
-      padding: 12px 18px;   /* ⬅️ increased */
-      font-size: 15px;      /* ⬅️ increased */
+      padding: 16px 28px;   /* ⬅️ doubled */
+      font-size: 18px;      /* ⬅️ doubled */
       background: #e5e7eb;
       color: #111827;
       z-index: 3;
     }
 
+    /* HINT — WITH EXTRA SPACE (2× SHIFT+ENTER EFFECT) */
     .hint {
-      margin-top: 12px;
+      margin-top: 28px;   /* ⬅️ extra vertical space */
       font-size: 13px;
       opacity: .7;
     }
@@ -187,7 +188,7 @@
       <button id="noBtn">No</button>
     </section>
 
-    <div class="hint" id="hint">“No” seems a bit shy 😈</div>
+    <div class="hint">“No” seems a bit shy 😈</div>
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
@@ -209,7 +210,6 @@
     const pew = document.getElementById("pewSound");
     const zone = document.getElementById("zone");
     const result = document.getElementById("result");
-    const hint = document.getElementById("hint");
 
     const calmImg = "me-calm.png";
     const fireImg = "me-fire.png";
@@ -277,7 +277,6 @@
     yesBtn.addEventListener("click", () => {
       accepted = true;
       zone.style.display = "none";
-      hint.style.display = "none";
       result.style.display = "block";
 
       confetti({
