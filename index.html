@@ -128,7 +128,7 @@ button {
 .daily-message .day {
   font-size: 12px;
   opacity: .6;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 </style>
 </head>
@@ -168,6 +168,10 @@ button {
         This is just the start.<br>
         I’ll take the next 9 days one at a time.
       </p>
+
+      <!-- STRUCTURAL HINT -->
+      <p class="day" style="margin-top:14px; opacity:.35;">Day 1 of 9</p>
+      <p style="opacity:.25;">—</p>
     </div>
   </section>
 </main>
@@ -192,7 +196,7 @@ const kawaiiImg = "me-kawaii.png";
 let accepted = false;
 let firing = false;
 
-/* HINT TEXT CHANGES WHEN NEAR NO */
+/* HINT TEXT CYCLE */
 const hintLines = [
   'That “No” doesn’t look very convincing 😌',
   'You’re hovering… interesting choice 😏',
@@ -243,7 +247,7 @@ function moveNo(px, py) {
   noBtn.style.top  = Math.max(0, Math.min(z.height - b.height, y)) + "px";
 }
 
-/* NO CLICK = FIRE */
+/* NO CLICK */
 noBtn.addEventListener("click", e => {
   e.preventDefault();
   if (firing || accepted) return;
