@@ -224,13 +224,15 @@
     let firing = false;
    let accepted = false;
 
-// 📝 HINT TEXT CYCLER (NEAR "NO")
+// 📝 SOFT TEASING HINT CYCLER (NEAR "NO")
 const hintLines = [
-  'That “No” doesn’t look very convincing 😈',
-  'Hey—why are you chasing “No”? 👀',
-  'Careful… “No” is getting nervous 😏',
-  'I think “No” is running out of excuses 😌',
-  'At this point, “No” is just teasing 😈'
+  'That “No” doesn’t look very convincing 😌',
+  'It’s okay… take your time 💗',
+  'You don’t have to be shy about it 🙈',
+  'I think your heart already knows 😏',
+  'No rush… I’m right here 😊',
+  'Some choices feel easier than they look 💞',
+  'That “Yes” seems pretty comfy over there 😌'
 ];
 
 let hintIndex = 0;
@@ -245,18 +247,23 @@ zone.addEventListener("pointermove", e => {
     (b.top + b.height / 2) - e.clientY
   );
 
+  // Only react when NEAR "NO"
   if (distance < 140) {
     const now = Date.now();
-    if (now - lastTrigger > 600) {
+
+    // Change line gently (prevents spam / pressure)
+    if (now - lastTrigger > 900) {
       hintIndex = (hintIndex + 1) % hintLines.length;
       hint.textContent = hintLines[hintIndex];
       lastTrigger = now;
     }
   } else {
+    // Reset to the calm first line
     hintIndex = 0;
     hint.textContent = hintLines[0];
   }
 });
+
 
     function fireGun() {
       if (firing || accepted) return;
@@ -334,6 +341,7 @@ zone.addEventListener("pointermove", e => {
   </script>
 </body>
 </html>
+
 
 
 
