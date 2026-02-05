@@ -29,16 +29,9 @@
       padding: 16px;
     }
 
-    #confettiCanvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
     .card {
       width: min(720px, 92vw);
-      padding: 26px 22px;
+      padding: 26px 22px 60px;
       background: var(--card);
       backdrop-filter: blur(10px);
       border-radius: 22px;
@@ -49,7 +42,7 @@
 
     /* IMAGE */
     .art {
-      width: min(170px, 55vw);
+      width: 160px;
       margin: 0 auto 14px;
       display: block;
       border-radius: 50%;
@@ -64,10 +57,8 @@
       100% { transform: translateY(0); }
     }
 
-    /* FIRE / SHAKE */
-    .fire {
-      animation: recoil 0.25s ease-out;
-    }
+    /* FIRE + SHAKE */
+    .fire { animation: recoil 0.25s ease-out; }
 
     @keyframes recoil {
       0% { transform: translateX(0); }
@@ -76,28 +67,25 @@
       100% { transform: translateX(0); }
     }
 
-    .shake {
-      animation: shake 0.3s linear;
-    }
+    .shake { animation: shake 0.3s linear; }
 
     @keyframes shake {
       0% { transform: translate(0); }
-      20% { transform: translate(-8px, 6px); }
-      40% { transform: translate(8px, -6px); }
-      60% { transform: translate(-6px, -4px); }
-      80% { transform: translate(6px, 4px); }
+      25% { transform: translate(-8px, 6px); }
+      50% { transform: translate(8px, -6px); }
+      75% { transform: translate(-6px, -4px); }
       100% { transform: translate(0); }
     }
 
-    /* MUZZLE FLASH */
+    /* FLASH */
     .flash {
       position: absolute;
       width: 80px;
       height: 80px;
-      background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
+      background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0));
       border-radius: 50%;
-      top: 75px;
-      right: 150px;
+      top: 85px;
+      right: 140px;
       opacity: 0;
       pointer-events: none;
     }
@@ -118,46 +106,46 @@
 
     .button-zone {
       position: relative;
-      width: min(520px, 92%);
-      height: 150px;
-      margin: 0 auto;
-      touch-action: none;
+      width: 100%;
+      height: 180px;
+      margin-top: 20px;
     }
 
-    /* BUTTONS — MATCH ORIGINAL */
-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: 800;
-}
+    button {
+      position: absolute;
+      top: 50%;
+      font-weight: 800;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0,0,0,.14);
+    }
 
+    /* YES — 8× BIG */
+    #yesBtn {
+      left: 50%;
+      padding: 16px 24px;
+      font-size: 18px;
+      background: var(--yes);
+      color: #fff;
+      transform: translate(-50%, -50%) scale(8);
+      transform-origin: center;
+      z-index: 2;
+    }
 
-#yesBtn {
-  left: 18%;
-  padding: 18px 30px;   /* ⬅️ bigger than default */
-  font-size: 20px;      /* ⬅️ bigger text */
-  font-weight: 800;
-  background: var(--yes);
-  color: #fff;
-}
-
-
-
-    #yesBtn:hover { background: var(--yesHover); }
-
-    /* NO — SMALLER */
-#noBtn {
-  left: 62%;
-  padding: 10px 18px;
-  font-size: 14px;
-  background: #e5e7eb;
-  color: #111827;
-}
-
+    /* NO — SMALL */
+    #noBtn {
+      left: 70%;
+      padding: 8px 14px;
+      font-size: 13px;
+      background: #e5e7eb;
+      color: #111827;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
 
     .hint {
-      margin-top: 10px;
+      margin-top: 14px;
       font-size: 13px;
       opacity: .7;
     }
@@ -182,8 +170,6 @@ button {
 </head>
 
 <body>
-  <canvas id="confettiCanvas"></canvas>
-
   <main class="card">
     <div class="flash" id="flash"></div>
 
@@ -226,7 +212,6 @@ button {
     let firing = false;
     let accepted = false;
 
-    /* 🔫 FIRE ONLY ON NO CLICK */
     function fireGun() {
       if (firing || accepted) return;
       firing = true;
@@ -248,7 +233,6 @@ button {
       }, 300);
     }
 
-    /* RUNAWAY NO (NO FIRING HERE) */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
@@ -276,16 +260,12 @@ button {
 
     zone.addEventListener("pointermove", e => {
       if (accepted) return;
-
       const b = noBtn.getBoundingClientRect();
       const d = Math.hypot(
         (b.left + b.width / 2) - e.clientX,
         (b.top + b.height / 2) - e.clientY
       );
-
-      if (d < 140) {
-        moveNo(e.clientX, e.clientY);
-      }
+      if (d < 140) moveNo(e.clientX, e.clientY);
     });
 
     noBtn.addEventListener("click", e => {
@@ -308,6 +288,3 @@ button {
   </script>
 </body>
 </html>
-
-
-
