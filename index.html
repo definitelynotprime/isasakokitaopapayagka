@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>For You</title>
+
+<title>9 / 9</title>
+
+<!-- EMOJI FAVICON -->
+<link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+  <text y='0.9em' font-size='90'>🖤❤️</text>
+</svg>">
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
@@ -185,7 +192,7 @@ const kawaiiImg = "me-kawaii.png";
 let accepted = false;
 let firing = false;
 
-/* 🧠 HINT TEXT CYCLE WHEN NEAR NO */
+/* HINT TEXT CHANGES WHEN NEAR NO */
 const hintLines = [
   'That “No” doesn’t look very convincing 😌',
   'You’re hovering… interesting choice 😏',
@@ -197,6 +204,7 @@ const hintLines = [
 let hintIndex = 0;
 let lastHint = 0;
 
+/* MOVE NO + CHANGE HINT */
 zone.addEventListener("pointermove", e => {
   if (accepted) return;
 
@@ -207,6 +215,8 @@ zone.addEventListener("pointermove", e => {
   );
 
   if (d < 140) {
+    moveNo(e.clientX, e.clientY);
+
     const now = Date.now();
     if (now - lastHint > 800) {
       hintIndex = (hintIndex + 1) % hintLines.length;
@@ -218,7 +228,7 @@ zone.addEventListener("pointermove", e => {
   }
 });
 
-/* 🏃 NO BUTTON RUNS */
+/* RUNAWAY NO */
 function moveNo(px, py) {
   const z = zone.getBoundingClientRect();
   const b = noBtn.getBoundingClientRect();
@@ -233,11 +243,7 @@ function moveNo(px, py) {
   noBtn.style.top  = Math.max(0, Math.min(z.height - b.height, y)) + "px";
 }
 
-zone.addEventListener("pointermove", e => {
-  if (!accepted) moveNo(e.clientX, e.clientY);
-});
-
-/* 🔫 NO CLICK */
+/* NO CLICK = FIRE */
 noBtn.addEventListener("click", e => {
   e.preventDefault();
   if (firing || accepted) return;
@@ -253,7 +259,7 @@ noBtn.addEventListener("click", e => {
   }, 300);
 });
 
-/* 💖 YES CLICK */
+/* YES CLICK */
 yesBtn.addEventListener("click", () => {
   accepted = true;
 
