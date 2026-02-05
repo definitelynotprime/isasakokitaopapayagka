@@ -222,7 +222,41 @@
     const kawaiiImg = "me-kawaii.png";
 
     let firing = false;
-    let accepted = false;
+   let accepted = false;
+
+// 📝 HINT TEXT CYCLER (NEAR "NO")
+const hintLines = [
+  'That “No” doesn’t look very convincing 😈',
+  'Hey—why are you chasing “No”? 👀',
+  'Careful… “No” is getting nervous 😏',
+  'I think “No” is running out of excuses 😌',
+  'At this point, “No” is just teasing 😈'
+];
+
+let hintIndex = 0;
+let lastTrigger = 0;
+
+zone.addEventListener("pointermove", e => {
+  if (accepted) return;
+
+  const b = noBtn.getBoundingClientRect();
+  const distance = Math.hypot(
+    (b.left + b.width / 2) - e.clientX,
+    (b.top + b.height / 2) - e.clientY
+  );
+
+  if (distance < 140) {
+    const now = Date.now();
+    if (now - lastTrigger > 600) {
+      hintIndex = (hintIndex + 1) % hintLines.length;
+      hint.textContent = hintLines[hintIndex];
+      lastTrigger = now;
+    }
+  } else {
+    hintIndex = 0;
+    hint.textContent = hintLines[0];
+  }
+});
 
     function fireGun() {
       if (firing || accepted) return;
@@ -300,6 +334,7 @@
   </script>
 </body>
 </html>
+
 
 
 
