@@ -31,7 +31,7 @@
 
     .card {
       width: min(720px, 92vw);
-      padding: 26px 22px 60px;
+      padding: 26px 22px 50px;
       background: var(--card);
       backdrop-filter: blur(10px);
       border-radius: 22px;
@@ -40,35 +40,32 @@
       position: relative;
     }
 
+    /* IMAGE */
     .art {
-      width: 160px;
+      width: 150px;
       margin: 0 auto 14px;
       display: block;
       border-radius: 50%;
       object-fit: contain;
       background: #fff;
-      animation: float 4s ease-in-out infinite;
     }
 
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
+    h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      margin: 12px 0 22px;
     }
 
+    /* BUTTON ZONE */
     .button-zone {
       position: relative;
       width: 100%;
-      height: 160px;
-      margin-top: 16px;
+      height: 120px;
     }
 
-    /* RESET BUTTON DEFAULTS */
+    /* RESET DEFAULT BUTTONS */
     button {
       all: unset;
       display: inline-block;
-      padding: 16px 26px;
-      font-size: 18px;
       font-weight: 800;
       border-radius: 999px;
       cursor: pointer;
@@ -76,17 +73,14 @@
       text-align: center;
     }
 
-    /* YES — BIG + LEFT */
-    .yes-wrap {
-      position: absolute;
-      left: 30%;
-      top: 50%;
-      transform: translate(-50%, -50%) scale(3.2);
-      transform-origin: center;
-      z-index: 2;
-    }
-
+    /* YES — MATCHES OWL VERSION */
     #yesBtn {
+      position: absolute;
+      left: 28%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      padding: 18px 42px;
+      font-size: 22px;
       background: var(--yes);
       color: #fff;
     }
@@ -95,22 +89,20 @@
       background: var(--yesHover);
     }
 
-    /* NO — DOUBLED SIZE (BUT STILL SMALLER THAN YES) */
+    /* NO — SMALLER, CALM */
     #noBtn {
       position: absolute;
+      left: 55%;
       top: 50%;
-      left: 62%;
-      transform: translateY(-50%);
-      padding: 16px 28px;   /* ⬅️ doubled */
-      font-size: 18px;      /* ⬅️ doubled */
+      transform: translate(-50%, -50%);
+      padding: 10px 22px;
+      font-size: 15px;
       background: #e5e7eb;
       color: #111827;
-      z-index: 3;
     }
 
-    /* HINT — WITH EXTRA SPACE (2× SHIFT+ENTER EFFECT) */
     .hint {
-      margin-top: 28px;   /* ⬅️ extra vertical space */
+      margin-top: 28px;
       font-size: 13px;
       opacity: .7;
     }
@@ -120,7 +112,7 @@
 
     @keyframes recoil {
       0% { transform: translateX(0); }
-      30% { transform: translateX(-8px); }
+      30% { transform: translateX(-6px); }
       60% { transform: translateX(6px); }
       100% { transform: translateX(0); }
     }
@@ -129,25 +121,27 @@
 
     @keyframes shake {
       0% { transform: translate(0); }
-      25% { transform: translate(-8px, 6px); }
-      50% { transform: translate(8px, -6px); }
-      75% { transform: translate(-6px, -4px); }
+      25% { transform: translate(-6px, 4px); }
+      50% { transform: translate(6px, -4px); }
+      75% { transform: translate(-4px, -3px); }
       100% { transform: translate(0); }
     }
 
     .flash {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0));
       border-radius: 50%;
-      top: 85px;
-      right: 140px;
+      top: 80px;
+      right: 150px;
       opacity: 0;
       pointer-events: none;
     }
 
-    .flash.active { animation: flash .15s ease-out; }
+    .flash.active {
+      animation: flash .15s ease-out;
+    }
 
     @keyframes flash {
       from { opacity: 1; }
@@ -161,7 +155,7 @@
     }
 
     .fireworks {
-      width: min(380px, 90vw);
+      width: min(360px, 90vw);
       margin: 0 auto;
       display: block;
     }
@@ -182,9 +176,7 @@
     <h1>MLCVL will you be my valentine?</h1>
 
     <section class="button-zone" id="zone">
-      <div class="yes-wrap">
-        <button id="yesBtn">Yes</button>
-      </div>
+      <button id="yesBtn">Yes</button>
       <button id="noBtn">No</button>
     </section>
 
@@ -252,8 +244,8 @@
       dx /= mag;
       dy /= mag;
 
-      let newLeft = (b.left - z.left) + dx * 150;
-      let newTop  = (b.top - z.top) + dy * 150;
+      let newLeft = (b.left - z.left) + dx * 120;
+      let newTop  = (b.top - z.top) + dy * 120;
 
       noBtn.style.left = clamp(newLeft, 0, z.width - b.width) + "px";
       noBtn.style.top  = clamp(newTop, 0, z.height - b.height) + "px";
@@ -266,7 +258,7 @@
         (b.left + b.width / 2) - e.clientX,
         (b.top + b.height / 2) - e.clientY
       );
-      if (d < 140) moveNo(e.clientX, e.clientY);
+      if (d < 120) moveNo(e.clientX, e.clientY);
     });
 
     noBtn.addEventListener("click", e => {
@@ -280,7 +272,7 @@
       result.style.display = "block";
 
       confetti({
-        particleCount: 300,
+        particleCount: 280,
         spread: 140,
         origin: { y: 0.6 }
       });
