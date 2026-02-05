@@ -63,6 +63,7 @@
       margin-top: 16px;
     }
 
+    /* RESET BUTTON DEFAULTS */
     button {
       all: unset;
       display: inline-block;
@@ -75,10 +76,10 @@
       text-align: center;
     }
 
-    /* YES — TASTEFUL BIG (≈3.2×) */
+    /* YES — BIG + LEFT ALIGNED */
     .yes-wrap {
       position: absolute;
-      left: 50%;
+      left: 30%; /* ⬅️ moved left */
       top: 50%;
       transform: translate(-50%, -50%) scale(3.2);
       transform-origin: center;
@@ -94,14 +95,14 @@
       background: var(--yesHover);
     }
 
-    /* NO — SMALL + RUNAWAY */
+    /* NO — SLIGHTLY BIGGER (NOT OA) */
     #noBtn {
       position: absolute;
       top: 50%;
-      left: 68%;
+      left: 62%;
       transform: translateY(-50%);
-      padding: 8px 14px;
-      font-size: 13px;
+      padding: 12px 18px;   /* ⬅️ increased */
+      font-size: 15px;      /* ⬅️ increased */
       background: #e5e7eb;
       color: #111827;
       z-index: 3;
