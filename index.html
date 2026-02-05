@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will you be my Valentine?</title>
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -30,7 +29,6 @@
       padding: 16px;
     }
 
-    /* CONFETTI CANVAS */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -49,208 +47,14 @@
       position: relative;
     }
 
-    /* MAIN IMAGE */
+    /* 🔽 IMAGE FIXED HERE (SMALLER + NO CUT) */
     .art {
-      width: min(220px, 70vw);
+      width: min(170px, 55vw);   /* ⬅️ smaller than before */
       margin: 0 auto 14px;
       display: block;
       border-radius: 50%;
-      object-fit: cover;
+      object-fit: contain;       /* ⬅️ prevents cutting */
+      background: #fff;
       animation: float 4s ease-in-out infinite;
       filter:
-        drop-shadow(0 0 12px rgba(255, 59, 122, 0.55))
-        drop-shadow(0 0 24px rgba(255, 59, 122, 0.35));
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0); }
-    }
-
-    /* FIRING EFFECT */
-    .fire {
-      animation: recoil 0.25s ease-out;
-    }
-
-    @keyframes recoil {
-      0%   { transform: translateX(0) scale(1); }
-      30%  { transform: translateX(-8px) scale(0.96); }
-      60%  { transform: translateX(6px) scale(1.04); }
-      100% { transform: translateX(0) scale(1); }
-    }
-
-    /* SCREEN SHAKE */
-    .shake {
-      animation: shake 0.3s linear;
-    }
-
-    @keyframes shake {
-      0% { transform: translate(0); }
-      20% { transform: translate(-8px, 6px); }
-      40% { transform: translate(8px, -6px); }
-      60% { transform: translate(-6px, -4px); }
-      80% { transform: translate(6px, 4px); }
-      100% { transform: translate(0); }
-    }
-
-    /* MUZZLE FLASH */
-    .flash {
-      position: absolute;
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0));
-      border-radius: 50%;
-      top: 70px;
-      right: 140px;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .flash.active {
-      animation: flash 0.15s ease-out;
-    }
-
-    @keyframes flash {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
-
-    h1 {
-      font-size: clamp(26px, 4vw, 44px);
-      margin: 12px 0 18px;
-    }
-
-    .button-zone {
-      position: relative;
-      width: min(520px, 92%);
-      height: 150px;
-      margin: 0 auto;
-      touch-action: none;
-    }
-
-    button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 16px 24px;
-      font-size: 18px;
-      font-weight: 800;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.14);
-      user-select: none;
-    }
-
-    #yesBtn {
-      left: 18%;
-      background: var(--yes);
-      color: #fff;
-    }
-
-    #yesBtn:hover { background: var(--yesHover); }
-
-    #noBtn {
-      left: 62%;
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .hint {
-      margin-top: 10px;
-      font-size: 13px;
-      opacity: .7;
-    }
-
-    .result {
-      display: none;
-      margin-top: 18px;
-    }
-  </style>
-</head>
-
-<body>
-  <canvas id="confettiCanvas"></canvas>
-
-  <main class="card">
-    <div class="flash" id="flash"></div>
-
-    <img id="mainArt" class="art" src="me-calm.png" alt="Valentine" />
-
-    <h1>MLCVL will you be my valentine?</h1>
-
-    <section class="button-zone" id="zone">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
-    </section>
-
-    <div class="hint" id="hint">“No” seems a bit shy 😈</div>
-
-    <section class="result" id="result">
-      <h2>YAY! 🎉</h2>
-    </section>
-  </main>
-
-  <audio id="pewSound" src="pew.mp3" preload="auto"></audio>
-
-  <script>
-    const art = document.getElementById("mainArt");
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const flash = document.getElementById("flash");
-    const pew = document.getElementById("pewSound");
-
-    const calmImg = "me-calm.png";
-    const fireImg = "me-fire.png";
-
-    let firing = false;
-    let accepted = false;
-
-    function fireGun() {
-      if (firing || accepted) return;
-      firing = true;
-
-      art.src = fireImg;
-      art.classList.add("fire");
-      document.body.classList.add("shake");
-      flash.classList.add("active");
-
-      pew.currentTime = 0;
-      pew.play();
-
-      setTimeout(() => {
-        art.src = calmImg;
-        art.classList.remove("fire");
-        document.body.classList.remove("shake");
-        flash.classList.remove("active");
-        firing = false;
-      }, 300);
-    }
-
-    document.addEventListener("click", e => {
-      if (!e.target.closest("#yesBtn")) {
-        fireGun();
-      }
-    });
-
-    noBtn.addEventListener("click", e => {
-      e.preventDefault();
-      fireGun();
-    });
-
-    yesBtn.addEventListener("click", () => {
-      accepted = true;
-      document.getElementById("zone").style.display = "none";
-      document.getElementById("hint").style.display = "none";
-      document.getElementById("result").style.display = "block";
-
-      confetti({
-        particleCount: 300,
-        spread: 140,
-        origin: { y: 0.6 }
-      });
-    });
-  </script>
-</body>
-</html>
+        drop-shadow(0 0 12px rgba(2
