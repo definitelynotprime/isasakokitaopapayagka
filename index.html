@@ -24,14 +24,13 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: url("bg.png") center / cover no-repeat;
+      background: radial-gradient(circle at top, var(--bg2), var(--bg1));
       font-family: system-ui, sans-serif;
       color: var(--text);
       overflow: hidden;
       padding: 16px;
     }
 
-    /* BAT-SIGNAL HEART */
     .bat-signal {
       position: fixed;
       inset: 0;
@@ -180,20 +179,21 @@
 
     <img id="mainArt" class="art" src="me-calm.png" alt="Valentine" />
 
-<h1>
-  MLCVL, will you be my Valentine? 🖤❤️<br>
-<span id="subtitle" style="font-size:16px; opacity:.65;">
-  I may be the Dark Knight… but you light up my heart ✨
-</span>
-</h1>
-
+    <h1>
+      MLCVL, will you be my Valentine? 🖤❤️<br>
+      <span id="subtitle" style="font-size:16px; opacity:.65;">
+        I may be the Dark Knight… but you light up my heart ✨
+      </span>
+    </h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
       <button id="noBtn">No</button>
     </section>
 
-    <div class="hint" id="hint">“No” has no power here in Gotham 😈🦇</div>
+    <div class="hint" id="hint">
+      That “No” doesn’t look very convincing 😌
+    </div>
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
@@ -206,6 +206,7 @@
   </main>
 
   <audio id="pewSound" src="pew.mp3" preload="auto"></audio>
+  <audio id="wowSound" src="wowww.mp3" preload="auto"></audio>
 
   <script>
     const art = document.getElementById("mainArt");
@@ -213,6 +214,7 @@
     const yesBtn = document.getElementById("yesBtn");
     const flash = document.getElementById("flash");
     const pew = document.getElementById("pewSound");
+    const wow = document.getElementById("wowSound");
     const zone = document.getElementById("zone");
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
@@ -222,48 +224,7 @@
     const kawaiiImg = "me-kawaii.png";
 
     let firing = false;
-   let accepted = false;
-
-// 📝 SOFT TEASING HINT CYCLER (NEAR "NO")
-const hintLines = [
-  'That “No” doesn’t look very convincing 😌',
-  'It’s okay… take your time 💗',
-  'You don’t have to be shy about it 🙈',
-  'I think your heart already knows 😏',
-  'No rush… I’m right here 😊',
-  'Some choices feel easier than they look 💞',
-  'That “Yes” seems pretty comfy over there 😌'
-];
-
-let hintIndex = 0;
-let lastTrigger = 0;
-
-zone.addEventListener("pointermove", e => {
-  if (accepted) return;
-
-  const b = noBtn.getBoundingClientRect();
-  const distance = Math.hypot(
-    (b.left + b.width / 2) - e.clientX,
-    (b.top + b.height / 2) - e.clientY
-  );
-
-  // Only react when NEAR "NO"
-  if (distance < 140) {
-    const now = Date.now();
-
-    // Change line gently (prevents spam / pressure)
-    if (now - lastTrigger > 900) {
-      hintIndex = (hintIndex + 1) % hintLines.length;
-      hint.textContent = hintLines[hintIndex];
-      lastTrigger = now;
-    }
-  } else {
-    // Reset to the calm first line
-    hintIndex = 0;
-    hint.textContent = hintLines[0];
-  }
-});
-
+    let accepted = false;
 
     function fireGun() {
       if (firing || accepted) return;
@@ -285,6 +246,42 @@ zone.addEventListener("pointermove", e => {
         firing = false;
       }, 300);
     }
+
+    // SOFT TEASING HINT CYCLER
+    const hintLines = [
+      'That “No” doesn’t look very convincing 😌',
+      'It’s okay… take your time 💗',
+      'You don’t have to be shy about it 🙈',
+      'I think your heart already knows 😏',
+      'No rush… I’m right here 😊',
+      'Some choices feel easier than they look 💞',
+      'That “Yes” seems pretty comfy over there 😌'
+    ];
+
+    let hintIndex = 0;
+    let lastTrigger = 0;
+
+    zone.addEventListener("pointermove", e => {
+      if (accepted) return;
+
+      const b = noBtn.getBoundingClientRect();
+      const distance = Math.hypot(
+        (b.left + b.width / 2) - e.clientX,
+        (b.top + b.height / 2) - e.clientY
+      );
+
+      if (distance < 140) {
+        const now = Date.now();
+        if (now - lastTrigger > 900) {
+          hintIndex = (hintIndex + 1) % hintLines.length;
+          hint.textContent = hintLines[hintIndex];
+          lastTrigger = now;
+        }
+      } else {
+        hintIndex = 0;
+        hint.textContent = hintLines[0];
+      }
+    });
 
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
@@ -322,30 +319,26 @@ zone.addEventListener("pointermove", e => {
       fireGun();
     });
 
-yesBtn.addEventListener("click", () => {
-  accepted = true;
+    yesBtn.addEventListener("click", () => {
+      accepted = true;
 
-  art.src = kawaiiImg;
-  zone.style.display = "none";
-  hint.style.display = "none";
-  document.getElementById("subtitle").style.display = "none"; // ⬅️ hide sub-text
-  result.style.display = "block";
+      wow.currentTime = 0;
+      wow.play().catch(() => {});
 
-  confetti({
-    particleCount: 200,
-    spread: 120,
-    shapes: ['heart'],
-    colors: ['#ff3b7a', '#ff6b9a', '#ffffff'],
-    origin: { y: 0.6 }
-  });
-});
+      art.src = kawaiiImg;
+      zone.style.display = "none";
+      hint.style.display = "none";
+      document.getElementById("subtitle").style.display = "none";
+      result.style.display = "block";
 
+      confetti({
+        particleCount: 200,
+        spread: 120,
+        shapes: ['heart'],
+        colors: ['#ff3b7a', '#ff6b9a', '#ffffff'],
+        origin: { y: 0.6 }
+      });
+    });
   </script>
 </body>
 </html>
-
-
-
-
-
-
