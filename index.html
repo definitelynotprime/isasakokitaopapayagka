@@ -42,14 +42,17 @@
 
     /* IMAGE — IDEAL SIZE */
     .art {
-      width: 160px;          /* ✅ ideal size */
-      height: auto;
-      margin: 0 auto 14px;
-      display: block;
-      border-radius: 50%;
-      object-fit: contain;
-      background: #fff;
-    }
+  width: 160px;
+  height: auto;
+  margin: 0 auto 14px;
+  display: block;
+  object-fit: contain;
+
+  /* IMPORTANT FIX */
+  border-radius: 0;        /* ⬅️ remove circular mask */
+  background: transparent;/* ⬅️ no white shape */
+}
+
 
     h1 {
       font-size: clamp(26px, 4vw, 44px);
@@ -282,3 +285,4 @@
   </script>
 </body>
 </html>
+
