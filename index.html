@@ -40,7 +40,6 @@
       position: relative;
     }
 
-    /* IMAGE */
     .art {
       width: 150px;
       margin: 0 auto 14px;
@@ -55,14 +54,12 @@
       margin: 12px 0 22px;
     }
 
-    /* BUTTON ZONE */
     .button-zone {
       position: relative;
       width: 100%;
-      height: 120px;
+      height: 130px;
     }
 
-    /* RESET DEFAULT BUTTONS */
     button {
       all: unset;
       display: inline-block;
@@ -73,14 +70,14 @@
       text-align: center;
     }
 
-    /* YES — MATCHES OWL VERSION */
+    /* YES — DOUBLED SIZE */
     #yesBtn {
       position: absolute;
       left: 28%;
       top: 50%;
       transform: translate(-50%, -50%);
-      padding: 18px 42px;
-      font-size: 22px;
+      padding: 28px 68px;   /* ⬅️ doubled */
+      font-size: 30px;      /* ⬅️ doubled */
       background: var(--yes);
       color: #fff;
     }
@@ -89,7 +86,7 @@
       background: var(--yesHover);
     }
 
-    /* NO — SMALLER, CALM */
+    /* NO — unchanged */
     #noBtn {
       position: absolute;
       left: 55%;
@@ -107,7 +104,6 @@
       opacity: .7;
     }
 
-    /* EFFECTS */
     .fire { animation: recoil .25s ease-out; }
 
     @keyframes recoil {
@@ -139,9 +135,7 @@
       pointer-events: none;
     }
 
-    .flash.active {
-      animation: flash .15s ease-out;
-    }
+    .flash.active { animation: flash .15s ease-out; }
 
     @keyframes flash {
       from { opacity: 1; }
@@ -180,7 +174,7 @@
       <button id="noBtn">No</button>
     </section>
 
-    <div class="hint">“No” seems a bit shy 😈</div>
+    <div class="hint" id="hint">“No” seems a bit shy 😈</div>
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
@@ -202,6 +196,7 @@
     const pew = document.getElementById("pewSound");
     const zone = document.getElementById("zone");
     const result = document.getElementById("result");
+    const hint = document.getElementById("hint");
 
     const calmImg = "me-calm.png";
     const fireImg = "me-fire.png";
@@ -269,6 +264,7 @@
     yesBtn.addEventListener("click", () => {
       accepted = true;
       zone.style.display = "none";
+      hint.style.display = "none";   // ⬅️ hides the shy text
       result.style.display = "block";
 
       confetti({
