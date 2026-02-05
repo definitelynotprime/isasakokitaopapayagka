@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will you be my Valentine?</title>
 
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -57,8 +58,69 @@
       100% { transform: translateY(0); }
     }
 
-    /* FIRE + SHAKE */
-    .fire { animation: recoil 0.25s ease-out; }
+    /* BUTTON ZONE */
+    .button-zone {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      margin-top: 20px;
+    }
+
+    /* REMOVE ALL DEFAULT BUTTON STYLES */
+    button {
+      all: unset;
+      display: inline-block;
+      padding: 16px 24px;
+      font-size: 18px;
+      font-weight: 800;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0,0,0,.14);
+      text-align: center;
+    }
+
+    /* YES — BIG VIA WRAPPER */
+    .yes-wrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(8);
+      transform-origin: center;
+      z-index: 2;
+    }
+
+    #yesBtn {
+      background: var(--yes);
+      color: #fff;
+    }
+
+    #yesBtn:hover {
+      background: var(--yesHover);
+    }
+
+    /* NO — SMALL */
+    #noBtn {
+      position: absolute;
+      top: 50%;
+      left: 70%;
+      transform: translateY(-50%);
+      padding: 8px 14px;
+      font-size: 13px;
+      background: #e5e7eb;
+      color: #111827;
+      z-index: 3;
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: 13px;
+      opacity: .7;
+    }
+
+    /* FIRE / SHAKE */
+    .fire {
+      animation: recoil 0.25s ease-out;
+    }
 
     @keyframes recoil {
       0% { transform: translateX(0); }
@@ -67,7 +129,9 @@
       100% { transform: translateX(0); }
     }
 
-    .shake { animation: shake 0.3s linear; }
+    .shake {
+      animation: shake 0.3s linear;
+    }
 
     @keyframes shake {
       0% { transform: translate(0); }
@@ -99,57 +163,7 @@
       to { opacity: 0; }
     }
 
-    h1 {
-      font-size: clamp(26px, 4vw, 44px);
-      margin: 12px 0 18px;
-    }
-
-    .button-zone {
-      position: relative;
-      width: 100%;
-      height: 180px;
-      margin-top: 20px;
-    }
-
-    button {
-      position: absolute;
-      top: 50%;
-      font-weight: 800;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.14);
-    }
-
-    /* YES — 8× BIG */
-    #yesBtn {
-      left: 50%;
-      padding: 16px 24px;
-      font-size: 18px;
-      background: var(--yes);
-      color: #fff;
-      transform: translate(-50%, -50%) scale(8);
-      transform-origin: center;
-      z-index: 2;
-    }
-
-    /* NO — SMALL */
-    #noBtn {
-      left: 70%;
-      padding: 8px 14px;
-      font-size: 13px;
-      background: #e5e7eb;
-      color: #111827;
-      transform: translateY(-50%);
-      z-index: 3;
-    }
-
-    .hint {
-      margin-top: 14px;
-      font-size: 13px;
-      opacity: .7;
-    }
-
+    /* RESULT */
     .result {
       display: none;
       margin-top: 18px;
@@ -178,7 +192,9 @@
     <h1>MLCVL will you be my valentine?</h1>
 
     <section class="button-zone" id="zone">
-      <button id="yesBtn">Yes</button>
+      <div class="yes-wrap">
+        <button id="yesBtn">Yes</button>
+      </div>
       <button id="noBtn">No</button>
     </section>
 
@@ -255,7 +271,6 @@
 
       noBtn.style.left = newLeft + "px";
       noBtn.style.top = newTop + "px";
-      noBtn.style.transform = "none";
     }
 
     zone.addEventListener("pointermove", e => {
