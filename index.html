@@ -107,6 +107,12 @@ button {
   margin-top: 22px;
 }
 
+.fireworks {
+  width: min(360px, 90vw);
+  margin: 0 auto 18px;
+  display: block;
+}
+
 .daily-message {
   font-size: 15px;
   line-height: 1.8;
@@ -141,8 +147,14 @@ button {
     That “No” doesn’t look very convincing 😌
   </div>
 
-  <!-- MESSAGE AFTER YES -->
+  <!-- AFTER YES -->
   <section class="result" id="result">
+    <img
+      class="fireworks"
+      src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
+      alt="Celebration"
+    />
+
     <div class="daily-message">
       <p class="day">Before Day 1</p>
       <p>
@@ -173,6 +185,40 @@ const kawaiiImg = "me-kawaii.png";
 let accepted = false;
 let firing = false;
 
+/* 🧠 HINT TEXT CYCLE WHEN NEAR NO */
+const hintLines = [
+  'That “No” doesn’t look very convincing 😌',
+  'You’re hovering… interesting choice 😏',
+  'It’s okay, take your time 💗',
+  'That “Yes” looks pretty comfy 😌',
+  'I think your heart already knows 😉'
+];
+
+let hintIndex = 0;
+let lastHint = 0;
+
+zone.addEventListener("pointermove", e => {
+  if (accepted) return;
+
+  const b = noBtn.getBoundingClientRect();
+  const d = Math.hypot(
+    (b.left + b.width / 2) - e.clientX,
+    (b.top + b.height / 2) - e.clientY
+  );
+
+  if (d < 140) {
+    const now = Date.now();
+    if (now - lastHint > 800) {
+      hintIndex = (hintIndex + 1) % hintLines.length;
+      hint.textContent = hintLines[hintIndex];
+      lastHint = now;
+    }
+  } else {
+    hint.textContent = hintLines[0];
+  }
+});
+
+/* 🏃 NO BUTTON RUNS */
 function moveNo(px, py) {
   const z = zone.getBoundingClientRect();
   const b = noBtn.getBoundingClientRect();
@@ -191,6 +237,7 @@ zone.addEventListener("pointermove", e => {
   if (!accepted) moveNo(e.clientX, e.clientY);
 });
 
+/* 🔫 NO CLICK */
 noBtn.addEventListener("click", e => {
   e.preventDefault();
   if (firing || accepted) return;
@@ -206,6 +253,7 @@ noBtn.addEventListener("click", e => {
   }, 300);
 });
 
+/* 💖 YES CLICK */
 yesBtn.addEventListener("click", () => {
   accepted = true;
 
