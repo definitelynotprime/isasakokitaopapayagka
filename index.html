@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will you be my Valentine?</title>
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -41,7 +40,6 @@
       position: relative;
     }
 
-    /* IMAGE */
     .art {
       width: 160px;
       margin: 0 auto 14px;
@@ -58,19 +56,17 @@
       100% { transform: translateY(0); }
     }
 
-    /* BUTTON ZONE */
     .button-zone {
       position: relative;
       width: 100%;
-      height: 180px;
-      margin-top: 20px;
+      height: 160px;
+      margin-top: 16px;
     }
 
-    /* REMOVE ALL DEFAULT BUTTON STYLES */
     button {
       all: unset;
       display: inline-block;
-      padding: 16px 24px;
+      padding: 16px 26px;
       font-size: 18px;
       font-weight: 800;
       border-radius: 999px;
@@ -79,12 +75,12 @@
       text-align: center;
     }
 
-    /* YES — BIG VIA WRAPPER */
+    /* YES — TASTEFUL BIG (≈3.2×) */
     .yes-wrap {
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) scale(8);
+      transform: translate(-50%, -50%) scale(3.2);
       transform-origin: center;
       z-index: 2;
     }
@@ -98,11 +94,11 @@
       background: var(--yesHover);
     }
 
-    /* NO — SMALL */
+    /* NO — SMALL + RUNAWAY */
     #noBtn {
       position: absolute;
       top: 50%;
-      left: 70%;
+      left: 68%;
       transform: translateY(-50%);
       padding: 8px 14px;
       font-size: 13px;
@@ -112,15 +108,13 @@
     }
 
     .hint {
-      margin-top: 14px;
+      margin-top: 12px;
       font-size: 13px;
       opacity: .7;
     }
 
-    /* FIRE / SHAKE */
-    .fire {
-      animation: recoil 0.25s ease-out;
-    }
+    /* EFFECTS */
+    .fire { animation: recoil .25s ease-out; }
 
     @keyframes recoil {
       0% { transform: translateX(0); }
@@ -129,9 +123,7 @@
       100% { transform: translateX(0); }
     }
 
-    .shake {
-      animation: shake 0.3s linear;
-    }
+    .shake { animation: shake .3s linear; }
 
     @keyframes shake {
       0% { transform: translate(0); }
@@ -141,7 +133,6 @@
       100% { transform: translate(0); }
     }
 
-    /* FLASH */
     .flash {
       position: absolute;
       width: 80px;
@@ -154,16 +145,13 @@
       pointer-events: none;
     }
 
-    .flash.active {
-      animation: flash 0.15s ease-out;
-    }
+    .flash.active { animation: flash .15s ease-out; }
 
     @keyframes flash {
       from { opacity: 1; }
       to { opacity: 0; }
     }
 
-    /* RESULT */
     .result {
       display: none;
       margin-top: 18px;
@@ -266,11 +254,8 @@
       let newLeft = (b.left - z.left) + dx * 150;
       let newTop  = (b.top - z.top) + dy * 150;
 
-      newLeft = clamp(newLeft, 0, z.width - b.width);
-      newTop  = clamp(newTop, 0, z.height - b.height);
-
-      noBtn.style.left = newLeft + "px";
-      noBtn.style.top = newTop + "px";
+      noBtn.style.left = clamp(newLeft, 0, z.width - b.width) + "px";
+      noBtn.style.top  = clamp(newTop, 0, z.height - b.height) + "px";
     }
 
     zone.addEventListener("pointermove", e => {
