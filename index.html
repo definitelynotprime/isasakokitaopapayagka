@@ -40,8 +40,10 @@
       position: relative;
     }
 
+    /* IMAGE — IDEAL SIZE */
     .art {
-      width: 150px;
+      width: 160px;          /* ✅ ideal size */
+      height: auto;
       margin: 0 auto 14px;
       display: block;
       border-radius: 50%;
@@ -70,14 +72,14 @@
       text-align: center;
     }
 
-    /* YES — DOUBLED SIZE */
+    /* YES — DOUBLE SIZE */
     #yesBtn {
       position: absolute;
       left: 28%;
       top: 50%;
       transform: translate(-50%, -50%);
-      padding: 28px 68px;   /* ⬅️ doubled */
-      font-size: 30px;      /* ⬅️ doubled */
+      padding: 28px 68px;
+      font-size: 30px;
       background: var(--yes);
       color: #fff;
     }
@@ -86,7 +88,7 @@
       background: var(--yesHover);
     }
 
-    /* NO — unchanged */
+    /* NO */
     #noBtn {
       position: absolute;
       left: 55%;
@@ -104,6 +106,7 @@
       opacity: .7;
     }
 
+    /* EFFECTS */
     .fire { animation: recoil .25s ease-out; }
 
     @keyframes recoil {
@@ -200,6 +203,7 @@
 
     const calmImg = "me-calm.png";
     const fireImg = "me-fire.png";
+    const kawaiiImg = "me-kawaii.png";   // ✅ kawaii image
 
     let firing = false;
     let accepted = false;
@@ -263,8 +267,10 @@
 
     yesBtn.addEventListener("click", () => {
       accepted = true;
+
+      art.src = kawaiiImg;          // ✅ switch to kawaii
       zone.style.display = "none";
-      hint.style.display = "none";   // ⬅️ hides the shy text
+      hint.style.display = "none";
       result.style.display = "block";
 
       confetti({
