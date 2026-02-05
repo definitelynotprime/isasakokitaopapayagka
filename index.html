@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will you be my Valentine?</title>
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -48,7 +47,7 @@
       position: relative;
     }
 
-    /* IMAGE — NO GLOW */
+    /* IMAGE */
     .art {
       width: min(170px, 55vw);
       margin: 0 auto 14px;
@@ -125,22 +124,23 @@
       touch-action: none;
     }
 
+    /* BUTTONS — MATCH ORIGINAL */
     button {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      padding: 16px 24px;          /* ORIGINAL SIZE */
+      font-size: 18px;             /* ORIGINAL SIZE */
+      font-weight: 800;
       border-radius: 999px;
       border: none;
       cursor: pointer;
       box-shadow: 0 10px 24px rgba(0,0,0,.14);
-      font-weight: 800;
+      user-select: none;
     }
 
-    /* YES — NORMAL */
     #yesBtn {
       left: 18%;
-      padding: 16px 26px;
-      font-size: 18px;
       background: var(--yes);
       color: #fff;
     }
@@ -198,7 +198,6 @@
 
     <div class="hint" id="hint">“No” seems a bit shy 😈</div>
 
-    <!-- RESULT WITH GIF (RESTORED) -->
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
       <img
@@ -209,7 +208,6 @@
     </section>
   </main>
 
-  <!-- SOUND -->
   <audio id="pewSound" src="pew.mp3" preload="auto"></audio>
 
   <script>
@@ -228,6 +226,7 @@
     let firing = false;
     let accepted = false;
 
+    /* 🔫 FIRE ONLY ON NO CLICK */
     function fireGun() {
       if (firing || accepted) return;
       firing = true;
@@ -249,6 +248,7 @@
       }, 300);
     }
 
+    /* RUNAWAY NO (NO FIRING HERE) */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
@@ -285,17 +285,12 @@
 
       if (d < 140) {
         moveNo(e.clientX, e.clientY);
-        fireGun();
       }
     });
 
     noBtn.addEventListener("click", e => {
       e.preventDefault();
       fireGun();
-    });
-
-    document.addEventListener("click", e => {
-      if (!e.target.closest("#yesBtn")) fireGun();
     });
 
     yesBtn.addEventListener("click", () => {
