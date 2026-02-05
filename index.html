@@ -9,9 +9,6 @@
 
   <style>
     :root {
-      --bg1: #0b0f1a;
-      --bg2: #141a2e;
-      --card: #0f172acc;
       --yes: #ff3b7a;
       --yesHover: #ff1f68;
       --text: #e5e7eb;
@@ -20,42 +17,67 @@
     * { box-sizing: border-box; }
 
     body {
-  margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
 
-  /* ✅ YOUR CANVA BACKGROUND */
-  background:
-    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
-    url("bg.png") center / cover no-repeat;
+      background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+        url("bg.png") center / cover no-repeat;
 
-  font-family: system-ui, sans-serif;
-  color: var(--text);
-  overflow: hidden;
-  padding: 16px;
-}
-
+      font-family: system-ui, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+      padding: 16px;
+    }
 
     .bat-signal {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 30%,
-        rgba(255,59,122,.28) 0%,
-        rgba(255,59,122,.18) 14%,
-        transparent 38%);
+      background: radial-gradient(
+        circle at 50% 30%,
+        rgba(255,59,122,.22),
+        transparent 40%
+      );
       pointer-events: none;
     }
 
+    /* 🔥 MATCHED CARD COLOR */
     .card {
       width: min(720px, 92vw);
       padding: 26px 22px 50px;
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      border-radius: 22px;
+
+      background: linear-gradient(
+        180deg,
+        rgba(18, 22, 45, 0.85),
+        rgba(12, 16, 34, 0.9)
+      );
+
+      backdrop-filter: blur(14px) saturate(120%);
+      -webkit-backdrop-filter: blur(14px) saturate(120%);
+
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 18px 60px rgba(0,0,0,.5);
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.65),
+        inset 0 0 0 1px rgba(255,255,255,.05);
+
       position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at top,
+        rgba(255,59,122,.08),
+        transparent 55%
+      );
+      pointer-events: none;
     }
 
     .art {
@@ -63,7 +85,6 @@
       margin: 0 auto 14px;
       display: block;
       object-fit: contain;
-      background: transparent;
       filter: drop-shadow(0 10px 30px rgba(255,59,122,.35));
     }
 
@@ -96,6 +117,10 @@
       font-size: 30px;
       background: var(--yes);
       color: #fff;
+    }
+
+    #yesBtn:hover {
+      background: var(--yesHover);
     }
 
     #noBtn {
@@ -132,7 +157,7 @@
       position: absolute;
       width: 70px;
       height: 70px;
-      background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0));
+      background: radial-gradient(circle, rgba(255,255,255,.9), transparent);
       border-radius: 50%;
       top: 80px;
       right: 150px;
@@ -243,8 +268,8 @@
     function moveNo(px, py) {
       const z = zone.getBoundingClientRect();
       const b = noBtn.getBoundingClientRect();
-      const dx = (b.left + b.width/2 - px);
-      const dy = (b.top + b.height/2 - py);
+      const dx = b.left + b.width/2 - px;
+      const dy = b.top + b.height/2 - py;
       const mag = Math.hypot(dx, dy) || 1;
 
       let x = (b.left - z.left) + dx/mag * 120;
@@ -289,7 +314,7 @@
       art.src = kawaiiImg;
       hint.style.display = "none";
       document.getElementById("subtitle").style.display = "none";
-      document.getElementById("mainTitle").innerHTML = "Guess I’m your Valentine now 😌🖤❤️";
+      document.getElementById("mainTitle").innerHTML = "It’s a date, MLCVL 🖤❤️";
       zone.style.display = "none";
       result.style.display = "block";
 
@@ -304,5 +329,3 @@
   </script>
 </body>
 </html>
-
-
