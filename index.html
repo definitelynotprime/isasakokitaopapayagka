@@ -34,13 +34,11 @@
     .bat-signal {
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(circle at 50% 30%,
-          rgba(255,59,122,.28) 0%,
-          rgba(255,59,122,.18) 14%,
-          transparent 38%);
+      background: radial-gradient(circle at 50% 30%,
+        rgba(255,59,122,.28) 0%,
+        rgba(255,59,122,.18) 14%,
+        transparent 38%);
       pointer-events: none;
-      z-index: 0;
     }
 
     .card {
@@ -52,7 +50,6 @@
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.5);
       position: relative;
-      z-index: 1;
     }
 
     .art {
@@ -77,7 +74,6 @@
 
     button {
       all: unset;
-      display: inline-block;
       font-weight: 800;
       border-radius: 999px;
       cursor: pointer;
@@ -94,10 +90,6 @@
       font-size: 30px;
       background: var(--yes);
       color: #fff;
-    }
-
-    #yesBtn:hover {
-      background: var(--yesHover);
     }
 
     #noBtn {
@@ -119,19 +111,15 @@
 
     .fire { animation: recoil .25s ease-out; }
     @keyframes recoil {
-      0% { transform: translateX(0); }
       30% { transform: translateX(-6px); }
       60% { transform: translateX(6px); }
-      100% { transform: translateX(0); }
     }
 
     .shake { animation: shake .3s linear; }
     @keyframes shake {
-      0% { transform: translate(0); }
       25% { transform: translate(-6px, 4px); }
       50% { transform: translate(6px, -4px); }
       75% { transform: translate(-4px, -3px); }
-      100% { transform: translate(0); }
     }
 
     .flash {
@@ -147,26 +135,17 @@
     }
 
     .flash.active { animation: flash .15s ease-out; }
-    @keyframes flash {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
+    @keyframes flash { to { opacity: 0; } }
 
     .result {
       display: none;
       margin-top: 18px;
-      animation: pop .35s ease;
     }
 
     .fireworks {
       width: min(360px, 90vw);
       margin: 0 auto;
       display: block;
-    }
-
-    @keyframes pop {
-      from { transform: scale(.96); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -177,9 +156,9 @@
   <main class="card">
     <div class="flash" id="flash"></div>
 
-    <img id="mainArt" class="art" src="me-calm.png" alt="Valentine" />
+    <img id="mainArt" class="art" src="me-calm.png" />
 
-    <h1>
+    <h1 id="mainTitle">
       MLCVL, will you be my Valentine? 🖤❤️<br>
       <span id="subtitle" style="font-size:16px; opacity:.65;">
         I may be the Dark Knight… but you light up my heart ✨
@@ -197,36 +176,84 @@
 
     <section class="result" id="result">
       <h2>YAY! 🎉</h2>
-      <img
-        class="fireworks"
-        src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
-        alt="Fireworks"
-      />
+      <img class="fireworks"
+        src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" />
     </section>
   </main>
 
-  <audio id="pewSound" src="pew.mp3" preload="auto"></audio>
-  <audio id="wowSound" src="wowww.mp3" preload="auto"></audio>
+  <audio id="pewSound" src="pew.mp3"></audio>
+  <audio id="wowSound" src="wowww.mp3"></audio>
 
   <script>
     const art = document.getElementById("mainArt");
-    const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
-    const flash = document.getElementById("flash");
+    const noBtn = document.getElementById("noBtn");
+    const zone = document.getElementById("zone");
+    const hint = document.getElementById("hint");
+    const result = document.getElementById("result");
     const pew = document.getElementById("pewSound");
     const wow = document.getElementById("wowSound");
-    const zone = document.getElementById("zone");
-    const result = document.getElementById("result");
-    const hint = document.getElementById("hint");
+    const flash = document.getElementById("flash");
 
     const calmImg = "me-calm.png";
     const fireImg = "me-fire.png";
     const kawaiiImg = "me-kawaii.png";
 
-    let firing = false;
     let accepted = false;
+    let firing = false;
 
-    function fireGun() {
+    const hintLines = [
+      'That “No” doesn’t look very convincing 😌',
+      'It’s okay… take your time 💗',
+      'You don’t have to be shy 🙈',
+      'I think your heart already knows 😏',
+      'That “Yes” looks comfy 😌'
+    ];
+
+    let hintIndex = 0;
+    let lastHint = 0;
+
+    zone.addEventListener("pointermove", e => {
+      if (accepted) return;
+
+      const b = noBtn.getBoundingClientRect();
+      const d = Math.hypot(
+        (b.left + b.width / 2) - e.clientX,
+        (b.top + b.height / 2) - e.clientY
+      );
+
+      if (d < 140) {
+        const now = Date.now();
+        if (now - lastHint > 800) {
+          hintIndex = (hintIndex + 1) % hintLines.length;
+          hint.textContent = hintLines[hintIndex];
+          lastHint = now;
+        }
+      } else {
+        hint.textContent = hintLines[0];
+      }
+    });
+
+    function moveNo(px, py) {
+      const z = zone.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
+      const dx = (b.left + b.width/2 - px);
+      const dy = (b.top + b.height/2 - py);
+      const mag = Math.hypot(dx, dy) || 1;
+
+      let x = (b.left - z.left) + dx/mag * 120;
+      let y = (b.top - z.top) + dy/mag * 120;
+
+      noBtn.style.left = Math.max(0, Math.min(z.width - b.width, x)) + "px";
+      noBtn.style.top  = Math.max(0, Math.min(z.height - b.height, y)) + "px";
+    }
+
+    zone.addEventListener("pointermove", e => {
+      if (!accepted) moveNo(e.clientX, e.clientY);
+    });
+
+    noBtn.addEventListener("click", e => {
+      e.preventDefault();
       if (firing || accepted) return;
       firing = true;
 
@@ -236,7 +263,7 @@
       flash.classList.add("active");
 
       pew.currentTime = 0;
-      pew.play().catch(() => {});
+      pew.play();
 
       setTimeout(() => {
         art.src = calmImg;
@@ -245,90 +272,19 @@
         flash.classList.remove("active");
         firing = false;
       }, 300);
-    }
-
-    // SOFT TEASING HINT CYCLER
-    const hintLines = [
-      'That “No” doesn’t look very convincing 😌',
-      'It’s okay… take your time 💗',
-      'You don’t have to be shy about it 🙈',
-      'I think your heart already knows 😏',
-      'No rush… I’m right here 😊',
-      'Some choices feel easier than they look 💞',
-      'That “Yes” seems pretty comfy over there 😌'
-    ];
-
-    let hintIndex = 0;
-    let lastTrigger = 0;
-
-    zone.addEventListener("pointermove", e => {
-      if (accepted) return;
-
-      const b = noBtn.getBoundingClientRect();
-      const distance = Math.hypot(
-        (b.left + b.width / 2) - e.clientX,
-        (b.top + b.height / 2) - e.clientY
-      );
-
-      if (distance < 140) {
-        const now = Date.now();
-        if (now - lastTrigger > 900) {
-          hintIndex = (hintIndex + 1) % hintLines.length;
-          hint.textContent = hintLines[hintIndex];
-          lastTrigger = now;
-        }
-      } else {
-        hintIndex = 0;
-        hint.textContent = hintLines[0];
-      }
-    });
-
-    function clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
-    }
-
-    function moveNo(px, py) {
-      const z = zone.getBoundingClientRect();
-      const b = noBtn.getBoundingClientRect();
-
-      let dx = (b.left + b.width / 2) - px;
-      let dy = (b.top + b.height / 2) - py;
-      let mag = Math.hypot(dx, dy) || 1;
-      dx /= mag;
-      dy /= mag;
-
-      let newLeft = (b.left - z.left) + dx * 120;
-      let newTop  = (b.top - z.top) + dy * 120;
-
-      noBtn.style.left = clamp(newLeft, 0, z.width - b.width) + "px";
-      noBtn.style.top  = clamp(newTop, 0, z.height - b.height) + "px";
-    }
-
-    zone.addEventListener("pointermove", e => {
-      if (accepted) return;
-      const b = noBtn.getBoundingClientRect();
-      const d = Math.hypot(
-        (b.left + b.width / 2) - e.clientX,
-        (b.top + b.height / 2) - e.clientY
-      );
-      if (d < 120) moveNo(e.clientX, e.clientY);
-    });
-
-    noBtn.addEventListener("click", e => {
-      e.preventDefault();
-      fireGun();
     });
 
     yesBtn.addEventListener("click", () => {
       accepted = true;
 
       wow.currentTime = 0;
-      wow.play().catch(() => {});
+      wow.play();
 
       art.src = kawaiiImg;
-      zone.style.display = "none";
       hint.style.display = "none";
       document.getElementById("subtitle").style.display = "none";
+      document.getElementById("mainTitle").innerHTML = "It’s a date, MLCVL 🖤❤️";
+      zone.style.display = "none";
       result.style.display = "block";
 
       confetti({
