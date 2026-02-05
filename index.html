@@ -9,11 +9,12 @@
 
   <style>
     :root {
-      --bg1: #ffd6e7;
-      --bg2: #ffeef6;
-      --card: #ffffffcc;
+      --bg1: #0b0f1a;
+      --bg2: #141a2e;
+      --card: #0f172acc;
       --yes: #ff3b7a;
       --yesHover: #ff1f68;
+      --text: #e5e7eb;
     }
 
     * { box-sizing: border-box; }
@@ -25,8 +26,22 @@
       place-items: center;
       background: radial-gradient(circle at top, var(--bg2), var(--bg1));
       font-family: system-ui, sans-serif;
+      color: var(--text);
       overflow: hidden;
       padding: 16px;
+    }
+
+    /* BAT-SIGNAL HEART */
+    .bat-signal {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 30%,
+          rgba(255,59,122,.28) 0%,
+          rgba(255,59,122,.18) 14%,
+          transparent 38%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .card {
@@ -36,23 +51,19 @@
       backdrop-filter: blur(10px);
       border-radius: 22px;
       text-align: center;
-      box-shadow: 0 18px 60px rgba(0,0,0,.15);
+      box-shadow: 0 18px 60px rgba(0,0,0,.5);
       position: relative;
+      z-index: 1;
     }
 
-    /* IMAGE — IDEAL SIZE */
     .art {
-  width: 160px;
-  height: auto;
-  margin: 0 auto 14px;
-  display: block;
-  object-fit: contain;
-
-  /* IMPORTANT FIX */
-  border-radius: 0;        /* ⬅️ remove circular mask */
-  background: transparent;/* ⬅️ no white shape */
-}
-
+      width: 160px;
+      margin: 0 auto 14px;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+      filter: drop-shadow(0 10px 30px rgba(255,59,122,.35));
+    }
 
     h1 {
       font-size: clamp(26px, 4vw, 44px);
@@ -71,11 +82,10 @@
       font-weight: 800;
       border-radius: 999px;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(0,0,0,.14);
+      box-shadow: 0 10px 24px rgba(0,0,0,.45);
       text-align: center;
     }
 
-    /* YES — DOUBLE SIZE */
     #yesBtn {
       position: absolute;
       left: 28%;
@@ -91,7 +101,6 @@
       background: var(--yesHover);
     }
 
-    /* NO */
     #noBtn {
       position: absolute;
       left: 55%;
@@ -99,8 +108,8 @@
       transform: translate(-50%, -50%);
       padding: 10px 22px;
       font-size: 15px;
-      background: #e5e7eb;
-      color: #111827;
+      background: #1f2937;
+      color: #e5e7eb;
     }
 
     .hint {
@@ -109,9 +118,7 @@
       opacity: .7;
     }
 
-    /* EFFECTS */
     .fire { animation: recoil .25s ease-out; }
-
     @keyframes recoil {
       0% { transform: translateX(0); }
       30% { transform: translateX(-6px); }
@@ -120,7 +127,6 @@
     }
 
     .shake { animation: shake .3s linear; }
-
     @keyframes shake {
       0% { transform: translate(0); }
       25% { transform: translate(-6px, 4px); }
@@ -142,7 +148,6 @@
     }
 
     .flash.active { animation: flash .15s ease-out; }
-
     @keyframes flash {
       from { opacity: 1; }
       to { opacity: 0; }
@@ -168,12 +173,19 @@
 </head>
 
 <body>
+  <div class="bat-signal"></div>
+
   <main class="card">
     <div class="flash" id="flash"></div>
 
     <img id="mainArt" class="art" src="me-calm.png" alt="Valentine" />
 
-    <h1>MLCVL will you be my valentine?</h1>
+    <h1>
+      MLCVL will you be my valentine?<br>
+      <span style="font-size:16px; opacity:.65;">
+        Gotham called… it’s for you 🦇❤️
+      </span>
+    </h1>
 
     <section class="button-zone" id="zone">
       <button id="yesBtn">Yes</button>
@@ -206,7 +218,7 @@
 
     const calmImg = "me-calm.png";
     const fireImg = "me-fire.png";
-    const kawaiiImg = "me-kawaii.png";   // ✅ kawaii image
+    const kawaiiImg = "me-kawaii.png";
 
     let firing = false;
     let accepted = false;
@@ -271,18 +283,19 @@
     yesBtn.addEventListener("click", () => {
       accepted = true;
 
-      art.src = kawaiiImg;          // ✅ switch to kawaii
+      art.src = kawaiiImg;
       zone.style.display = "none";
       hint.style.display = "none";
       result.style.display = "block";
 
       confetti({
-        particleCount: 280,
-        spread: 140,
+        particleCount: 200,
+        spread: 120,
+        shapes: ['heart'],
+        colors: ['#ff3b7a', '#ff6b9a', '#ffffff'],
         origin: { y: 0.6 }
       });
     });
   </script>
 </body>
 </html>
-
